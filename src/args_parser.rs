@@ -1,16 +1,18 @@
 extern crate getopts;
 
 use getopts::Options;
-use std::env;
 
+pub const ERR_UNSUPP_FORMAT: &str = "Unsupported format specified.";
+pub const ERR_NO_FILE: &str = "No input file specified.";
+pub const ERR_CANNOT_DETECT: &str = "Cannot detect input format, please specify it via -i";
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct FileFormat {
     pub file: String,
     pub format: SupportedFormats,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct TranscodeParams {
     pub input: FileFormat,
     pub output: FileFormat,
@@ -31,7 +33,7 @@ impl SupportedFormats {
             "yaml" => Ok(SupportedFormats::Yaml),
             "toml" => Ok(SupportedFormats::Toml),
             "cbor" => Ok(SupportedFormats::Cbor),
-            _ => Err("Unsupported format specified.".to_string()),
+            _ => Err(ERR_UNSUPP_FORMAT.to_string()),
         }
     }
 }
@@ -41,9 +43,7 @@ fn print_help(opts: Options) {
     print!("{}\n", opts.usage(&brief));
 }
 
-pub fn parse() -> Result<Option<TranscodeParams>, String> {
-    let args: Vec<String> = env::args().collect();
-
+pub fn parse(args: Vec<String>) -> Result<Option<TranscodeParams>, String> {
     let mut opts = Options::new();
     opts.optopt("i", "input", "set output format (json|toml|cbor) [default: auto-detect from input file extension]", "INPUT_FORMAT");
     opts.optopt("f", "format", "set output format (json|yaml|toml|cbor) [default: json]", "OUTPUT_FORMAT");
@@ -62,11 +62,16 @@ pub fn parse() -> Result<Option<TranscodeParams>, String> {
         parsed_args.free[0].clone()
     } else {
         print_help(opts);
-        return Err("No input file specified.".to_string());
+        return Err(ERR_NO_FILE.to_string());
     };
     let input_format_str = match parsed_args.opt_str("i") {
         Some(f) => f.to_lowercase(),
-        None => input_file.split('.').next_back().expect("Cannot detect input format, please specify it via -i").to_string(),
+        None => {
+            match input_file.split('.').count() {
+                1 => return Err(ERR_CANNOT_DETECT.to_string()),
+                _ => input_file.split('.').next_back().expect(ERR_CANNOT_DETECT).to_string(),
+            }
+        }
     };
     let input_format = match SupportedFormats::from_string(&input_format_str) {
         Ok(f) => f,
