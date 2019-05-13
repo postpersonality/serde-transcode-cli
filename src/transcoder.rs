@@ -6,7 +6,7 @@ extern crate serde_yaml;
 extern crate toml;
 
 use super::args_parser::{ TranscodeParams, SupportedFormats::* };
-use std::{ fs, fs::File };
+use std::fs::{ self, File };
 use std::io::{ Write, BufReader, BufWriter };
 
 const ERR_READ_FILE: &str = "Unable to read file";
