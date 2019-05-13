@@ -9,8 +9,8 @@ Usage: serde-transcode-cli INPUT_FILE [options]
 
 Options:
     -i, --input INPUT_FORMAT
-                        set output format (json|json5|yaml|toml|cbor)
-                        [default: auto-detect from input file extension]
+                        set output format (json|toml|cbor) [default:
+                        auto-detect from input file extension]
     -f, --format OUTPUT_FORMAT
                         set output format (json|yaml|toml|cbor) [default:
                         json]

@@ -19,7 +19,6 @@ pub struct TranscodeParams {
 #[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
 pub enum SupportedFormats {
     Json,
-    Json5,
     Yaml,
     Toml,
     Cbor,
@@ -29,7 +28,6 @@ impl SupportedFormats {
     pub fn from_string(str: &String) -> Result<SupportedFormats, String> {
         match str.to_lowercase().as_ref() {
             "json" => Ok(SupportedFormats::Json),
-            "json5" => Ok(SupportedFormats::Json5),
             "yaml" => Ok(SupportedFormats::Yaml),
             "toml" => Ok(SupportedFormats::Toml),
             "cbor" => Ok(SupportedFormats::Cbor),
@@ -47,7 +45,7 @@ pub fn parse() -> Result<Option<TranscodeParams>, String> {
     let args: Vec<String> = env::args().collect();
 
     let mut opts = Options::new();
-    opts.optopt("i", "input", "set output format (json|json5|yaml|toml|cbor) [default: auto-detect from input file extension]", "INPUT_FORMAT");
+    opts.optopt("i", "input", "set output format (json|toml|cbor) [default: auto-detect from input file extension]", "INPUT_FORMAT");
     opts.optopt("f", "format", "set output format (json|yaml|toml|cbor) [default: json]", "OUTPUT_FORMAT");
     opts.optopt("o", "output", "set output file name", "OUTPUT_FILE");
     opts.optflag("h", "help", "print this help menu");
