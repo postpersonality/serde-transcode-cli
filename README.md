@@ -1,4 +1,8 @@
-# serde-transcode-cli
+# serde-transcode-cli &emsp; [![Build Status]][travis]
+
+[Build Status]: https://api.travis-ci.org/serde-rs/serde.svg?branch=master
+[travis]: https://travis-ci.org/serde-rs/serde
+
 File format conversion CLI utility
 
 ```
