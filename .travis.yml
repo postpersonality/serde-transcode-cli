@@ -1,11 +1,9 @@
 language: rust
-rust: stable
-os: linux
-cache:
- directories:
-  - $HOME/.cargo
+rust:
+  - stable
+cache: cargo
 
+language: rust
 script:
-  - cd "${TRAVIS_BUILD_DIR}"
-  - cargo build
-  - cargo
+  - cargo build --verbose --all
+  - cargo test --verbose --all
