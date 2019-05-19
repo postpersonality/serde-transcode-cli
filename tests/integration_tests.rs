@@ -45,11 +45,11 @@ impl fmt::Display for AppError {
 }
 
 fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
-    let tmp_dir = TempDir::new()?;
+    let tmp_dir = TempDir::new().expect("Cannot create temp directory");
     let input_file = tmp_dir.child(i_fixture);
     let output_file = tmp_dir.child("output");
     let input_fixture_path = format!("{}/tests/assets/{}", env!("CARGO_MANIFEST_DIR"), i_fixture);
-    copy(input_fixture_path, tmp_dir.path().join(i_fixture))?;
+    copy(input_fixture_path, tmp_dir.path().join(i_fixture)).expect("Cannot copy fixture file");
 
     let mut cmnd = get_cmd();
     cmnd.arg(input_file.path())
@@ -74,7 +74,7 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     let output_fixture_file = format!("./tests/assets/{}.{}", i_fixture, o_format);
     output_file.assert(predicate::path::eq_file(output_fixture_file));
 
-    tmp_dir.close()?;
+    tmp_dir.close().expect("Cannot close temp directory");
     Ok(())
 }
 
