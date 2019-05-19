@@ -103,3 +103,18 @@ fn cbor_toml() -> Result<(), Box<Error>> {
 fn cbor_yaml() -> Result<(), Box<Error>> {
     test("test.cbor", "yaml")
 }
+
+#[test]
+fn toml_cbor() -> Result<(), Box<Error>> {
+    test("test.toml", "cbor")
+}
+
+#[test]
+fn toml_json() -> Result<(), Box<Error>> {
+    test("test.toml", "json")
+}
+
+#[test]
+fn toml_yaml() -> Result<(), Box<Error>> {
+    test("test.toml", "yaml")
+}
