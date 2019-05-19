@@ -71,7 +71,7 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
         }));
     }
 
-    let output_fixture_file = format!("./tests/assets/{}.{}", i_fixture, o_format);
+    let output_fixture_file = format!("{}/tests/assets/{}.{}", env!("CARGO_MANIFEST_DIR"), i_fixture, o_format);
     output_file.assert(predicate::path::eq_file(output_fixture_file));
 
     tmp_dir.close().expect("Cannot close temp directory");
