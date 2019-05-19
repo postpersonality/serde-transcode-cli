@@ -48,7 +48,7 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     let tmp_dir = TempDir::new()?;
     let input_file = tmp_dir.child(i_fixture);
     let output_file = tmp_dir.child("output");
-    let input_fixture_path = format!("./tests/assets/{}", i_fixture);
+    let input_fixture_path = format!("{}/tests/assets/{}", env!("CARGO_MANIFEST_DIR"), i_fixture);
     copy(input_fixture_path, tmp_dir.path().join(i_fixture))?;
 
     let mut cmnd = get_cmd();
