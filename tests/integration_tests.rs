@@ -30,6 +30,9 @@ fn file_not_specified() -> Result<(), Box<Error>> {
 #[derive(Debug)]
 struct AppError {
     stderr: String,
+    input_file: String,
+    output_file: String,
+    output_format: String,
 }
 
 impl Error for AppError {
@@ -60,7 +63,12 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     // Catch stderr
     let result = ca.get_output();
     if !result.status.success() {
-        return Err(Box::new(AppError{ stderr: String::from_utf8_lossy(&result.stderr.clone()).to_string() }));
+        return Err(Box::new(AppError{
+            stderr: String::from_utf8_lossy(&result.stderr.clone()).to_string(),
+            input_file: String::from(input_file.path().to_str().unwrap()),
+            output_file: String::from(output_file.path().to_str().unwrap()),
+            output_format: o_format.to_string(),
+        }));
     }
 
     let output_fixture_file = format!("./tests/assets/{}.{}", i_fixture, o_format);
