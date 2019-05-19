@@ -27,6 +27,20 @@ fn file_not_specified() -> Result<(), Box<Error>> {
 }
 
 
+#[derive(Debug)]
+struct AppError {
+    stderr: String,
+}
+
+impl Error for AppError {
+}
+
+impl fmt::Display for AppError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.stderr)
+    }
+}
+
 fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     let tmp_dir = TempDir::new()?;
     let input_file = tmp_dir.child(i_fixture);
@@ -41,7 +55,14 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
         .arg("-f")
         .arg(o_format);
 
-    cmnd.assert();
+    let ca = cmnd.assert();
+
+    // Catch stderr
+    let result = ca.get_output();
+    if !result.status.success() {
+        return Err(Box::new(AppError{ stderr: String::from_utf8_lossy(&result.stderr.clone()).to_string() }));
+    }
+
     let output_fixture_file = format!("./tests/assets/{}.{}", i_fixture, o_format);
     output_file.assert(predicate::path::eq_file(output_fixture_file));
 
