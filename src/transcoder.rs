@@ -14,7 +14,6 @@ const ERR_WRITE_FILE: &str = "Unable to write file";
 const ERR_TRANSCODE: &str = "Unable to transcode";
 
 pub fn transcode(params: TranscodeParams) {
-    panic!("{}", &params);
     match (params.input.format, params.output.format) {
         (Json, Json) => {
             let reader = BufReader::new(File::open(params.input.file).expect(ERR_READ_FILE));

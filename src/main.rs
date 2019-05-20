@@ -1,5 +1,5 @@
 mod args_parser;
-mod transcoder;
+// mod transcoder;
 
 #[cfg(test)]
 mod args_parser_tests;
@@ -16,7 +16,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Err(e) => return Err(e.into()),
     };
 
-    transcoder::transcode(params);
+    panic!("{}", &params);
+    // transcoder::transcode(params);
 
-    Ok(())
+    // Ok(())
 }
