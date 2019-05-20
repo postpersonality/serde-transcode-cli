@@ -18,6 +18,12 @@ pub struct TranscodeParams {
     pub output: FileFormat,
 }
 
+impl std::fmt::Display for TranscodeParams {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "input file: {}, output file: {}", self.input.file, self.output.file)
+    }
+}
+
 #[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
 pub enum SupportedFormats {
     Json,
