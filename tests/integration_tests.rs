@@ -48,7 +48,7 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     let tmp_dir = TempDir::new().expect("Cannot create temp directory");
     let input_file = tmp_dir.child(i_fixture);
     let output_file = tmp_dir.child("output");
-    output_file.touch()?;
+    std::fs::File::create(output_file.path())?;
     let input_fixture_path = format!("{}/tests/assets/{}", env!("CARGO_MANIFEST_DIR"), i_fixture);
     copy(input_fixture_path, tmp_dir.path().join(i_fixture)).expect("Cannot copy fixture file");
 
