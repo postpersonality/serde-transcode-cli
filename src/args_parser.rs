@@ -45,7 +45,7 @@ fn print_help(opts: Options) {
 
 pub fn parse(args: Vec<String>) -> Result<Option<TranscodeParams>, String> {
     let mut opts = Options::new();
-    opts.optopt("i", "input", "set output format (json|toml|cbor) [default: auto-detect from input file extension]", "INPUT_FORMAT");
+    opts.optopt("i", "input", "set input format (json|toml|cbor) [default: auto-detect from input file extension]", "INPUT_FORMAT");
     opts.optopt("f", "format", "set output format (json|yaml|toml|cbor) [default: json]", "OUTPUT_FORMAT");
     opts.optopt("o", "output", "set output file name", "OUTPUT_FILE");
     opts.optflag("h", "help", "print this help menu");
@@ -87,7 +87,7 @@ pub fn parse(args: Vec<String>) -> Result<Option<TranscodeParams>, String> {
         Err(e) => return Err(e),
     };
     let output_file = match parsed_args.opt_str("o") {
-        Some(o) => o.to_lowercase(),
+        Some(o) => o,
         None => format!("{}.{}", input_file, output_format_str),
     };
 

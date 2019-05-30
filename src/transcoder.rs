@@ -20,7 +20,7 @@ pub fn transcode(params: TranscodeParams) {
             let writer = BufWriter::new(File::create(params.output.file).expect(ERR_WRITE_FILE));
 
             let mut deserializer = serde_json::Deserializer::from_reader(reader);
-            let mut serializer = serde_json::Serializer::new(writer);
+            let mut serializer = serde_json::Serializer::pretty(writer);
             serde_transcode::transcode(&mut deserializer, &mut serializer).expect(ERR_TRANSCODE);
 
             serializer.into_inner().flush().unwrap();
