@@ -53,6 +53,15 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     let input_fixture_path = format!("{}/tests/assets/{}", env!("CARGO_MANIFEST_DIR"), i_fixture);
     copy(input_fixture_path, tmp_dir.path().join(i_fixture)).expect("Cannot copy fixture file");
 
+    let mut cmnd = get_cmd();
+    cmnd.arg(input_file.path())
+        .arg("-o")
+        .arg(output_file.path())
+        .arg("-f")
+        .arg(o_format);
+
+    let ca = cmnd.assert();
+
     let o = Command::new("whoami").output()?;
     let c = String::from_utf8_lossy(o.stdout.as_ref());
     println!("whoami info: {}", c);
@@ -62,15 +71,6 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     let o = Command::new("ls").arg("-al").arg(output_file.path().to_str().unwrap()).output()?;
     let c = String::from_utf8_lossy(o.stdout.as_ref());
     println!("file info: {}", c);
-
-    let mut cmnd = get_cmd();
-    cmnd.arg(input_file.path())
-        .arg("-o")
-        .arg(output_file.path())
-        .arg("-f")
-        .arg(o_format);
-
-    let ca = cmnd.assert();
 
     // Catch stderr
     let result = ca.get_output();
