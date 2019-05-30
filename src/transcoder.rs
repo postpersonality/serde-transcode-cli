@@ -22,12 +22,16 @@ pub fn transcode(params: TranscodeParams) {
     let o = Command::new("ls").arg("-al").arg(p.to_str().unwrap()).output().expect("path");
     let c = String::from_utf8_lossy(o.stdout.as_ref());
     println!("path info: {}", c);
+    let c = String::from_utf8_lossy(o.stderr.as_ref());
+    println!("path err: {}", c);
     let o = Command::new("ls").arg("-al").arg(&params.input.file).output().expect("ifile");
     let c = String::from_utf8_lossy(o.stdout.as_ref());
     println!("ifile info: {}", c);
     let o = Command::new("ls").arg("-al").arg(&params.output.file).output().expect("ofile");
     let c = String::from_utf8_lossy(o.stdout.as_ref());
     println!("ofile info: {}", c);
+    let c = String::from_utf8_lossy(o.stderr.as_ref());
+    println!("ofile err: {}", c);
 
     println!("i info: {}", &params.input.file);
     println!("o info: {}", &params.output.file);
