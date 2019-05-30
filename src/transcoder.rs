@@ -8,7 +8,6 @@ extern crate toml;
 use super::args_parser::{ TranscodeParams, SupportedFormats::* };
 use std::fs::{ self, File };
 use std::io::{ Write, BufReader, BufWriter };
-use std::process::Command;
 
 const ERR_READ_FILE: &str = "Unable to read file";
 const ERR_WRITE_FILE: &str = "Unable to write file";
