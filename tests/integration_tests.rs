@@ -49,6 +49,17 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
     let input_file = tmp_dir.child(i_fixture);
     let output_file = tmp_dir.child("output");
     std::fs::File::create(output_file.path())?;
+
+    let o = Command::new("whoami").output()?;
+    let c = String::from_utf8_lossy(o.stdout.as_ref());
+    println!("whoami info: {}", c);
+    let o = Command::new("ls").arg("-al").arg(tmp_dir.path().to_str().unwrap()).output()?;
+    let c = String::from_utf8_lossy(o.stdout.as_ref());
+    println!("path info: {}", c);
+    let o = Command::new("ls").arg("-al").arg(output_file.path().to_str().unwrap()).output()?;
+    let c = String::from_utf8_lossy(o.stdout.as_ref());
+    println!("file info: {}", c);
+
     let input_fixture_path = format!("{}/tests/assets/{}", env!("CARGO_MANIFEST_DIR"), i_fixture);
     copy(input_fixture_path, tmp_dir.path().join(i_fixture)).expect("Cannot copy fixture file");
 
