@@ -91,4 +91,18 @@ fn parse_params() {
             },
         }))
     );
+
+    assert_eq!(
+        parse_args("CaseTest.json -f yaml -i toml -o CaseTest.yaml"),
+        Ok(Some(TranscodeParams{
+            input: FileFormat{
+                file: "CaseTest.json".to_string(),
+                format: Toml,
+            },
+            output: FileFormat{
+                file: "CaseTest.yaml".to_string(),
+                format: Yaml,
+            },
+        }))
+    );
 }
