@@ -8,12 +8,28 @@ extern crate toml;
 use super::args_parser::{ TranscodeParams, SupportedFormats::* };
 use std::fs::{ self, File };
 use std::io::{ Write, BufReader, BufWriter };
+use std::process::Command;
 
 const ERR_READ_FILE: &str = "Unable to read file";
 const ERR_WRITE_FILE: &str = "Unable to write file";
 const ERR_TRANSCODE: &str = "Unable to transcode";
 
 pub fn transcode(params: TranscodeParams) {
+
+    let o = Command::new("whoami").output().expect("whoami");
+    let c = String::from_utf8_lossy(o.stdout.as_ref());
+    println!("whoami info: {}", c);
+    let o = Command::new("ls").arg("-al").arg(&params.input.file).output().expect("ifile");
+    let c = String::from_utf8_lossy(o.stdout.as_ref());
+    println!("ifile info: {}", c);
+    let o = Command::new("ls").arg("-al").arg(&params.output.file).output().expect("ofile");
+    let c = String::from_utf8_lossy(o.stdout.as_ref());
+    println!("ofile info: {}", c);
+
+    println!("i info: {}", &params.input.file);
+    println!("o info: {}", &params.output.file);
+
+
     match (params.input.format, params.output.format) {
         (Json, Json) => {
             let reader = BufReader::new(File::open(params.input.file).expect(ERR_READ_FILE));

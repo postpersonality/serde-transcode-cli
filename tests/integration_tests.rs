@@ -85,6 +85,8 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
             output_file: String::from(output_file.path().to_str().unwrap()),
             output_format: o_format.to_string(),
         }));
+    } else {
+        println!("output: {}", String::from_utf8_lossy(&result.stdout.clone()).to_string());
     }
 
     let output_fixture_file = format!("{}/tests/assets/{}.{}", env!("CARGO_MANIFEST_DIR"), i_fixture, o_format);
