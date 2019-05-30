@@ -66,9 +66,6 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
 
     let ca = cmnd.assert();
 
-    let o = Command::new("whoami").output()?;
-    let c = String::from_utf8_lossy(o.stdout.as_ref());
-    println!("whoami info: {}", c);
     let o = Command::new("ls").arg("-al").arg(tmp_dir.path().to_str().unwrap()).output()?;
     let c = String::from_utf8_lossy(o.stdout.as_ref());
     println!("path info: {}", c);

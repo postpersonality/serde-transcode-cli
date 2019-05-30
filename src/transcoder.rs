@@ -16,9 +16,12 @@ const ERR_TRANSCODE: &str = "Unable to transcode";
 
 pub fn transcode(params: TranscodeParams) {
 
-    let o = Command::new("whoami").output().expect("whoami");
+    let p = std::path::Path::new(&params.output.file).parent().unwrap();
+    println!("path: {}", p.display());
+
+    let o = Command::new("ls").arg("-al").arg(p.to_str().unwrap()).output().expect("path");
     let c = String::from_utf8_lossy(o.stdout.as_ref());
-    println!("whoami info: {}", c);
+    println!("path info: {}", c);
     let o = Command::new("ls").arg("-al").arg(&params.input.file).output().expect("ifile");
     let c = String::from_utf8_lossy(o.stdout.as_ref());
     println!("ifile info: {}", c);
