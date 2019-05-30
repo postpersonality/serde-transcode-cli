@@ -16,7 +16,7 @@ const ERR_TRANSCODE: &str = "Unable to transcode";
 
 pub fn transcode(params: TranscodeParams) {
 
-    let p = std::path::Path::new(&params.output.file).parent().unwrap();
+    let p = std::path::Path::new(&params.input.file).parent().unwrap();
     println!("path: {}", p.display());
 
     let o = Command::new("ls").arg("-al").arg(p.to_str().unwrap()).output().expect("path");
