@@ -6,6 +6,8 @@ use std::error::Error;
 use std::process::Command;
 use std::fs::{ copy };
 use std::fmt;
+use std::fs::Permissions;
+use std::os::unix::fs::PermissionsExt;
 use predicates::prelude::*;
 use assert_cmd::prelude::*;
 use assert_fs::prelude::*;
@@ -52,6 +54,8 @@ fn test(i_fixture: &str, o_format: &str) -> Result<(), Box<Error>> {
 
     let input_fixture_path = format!("{}/tests/assets/{}", env!("CARGO_MANIFEST_DIR"), i_fixture);
     copy(input_fixture_path, tmp_dir.path().join(i_fixture)).expect("Cannot copy fixture file");
+    std::fs::set_permissions(tmp_dir.path().join(i_fixture), Permissions::from_mode(0o777))?;
+    std::fs::set_permissions(output_file.path(), Permissions::from_mode(0o777))?;
 
     let mut cmnd = get_cmd();
     cmnd.arg(input_file.path())
